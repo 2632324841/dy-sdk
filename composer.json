@@ -1,0 +1,22 @@
+{
+    "name": "deadlymous/douyin",
+    "autoload": {
+        "psr-4": {
+            "Douyin\\": "src/"
+        }
+    },
+    "type":"library",
+    "authors": [
+        {
+            "name": "JC",
+            "email": "2632324841@qq.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^5.4"
+    }
+}
