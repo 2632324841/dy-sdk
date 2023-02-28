@@ -22,7 +22,7 @@ use Douyin\Tools\Tools;
 // $data = $obj->imageCensor(["targets"=> ["ad", "porn", "politics", "disgusting"], 'tasks'=>[['image_data'=>base64_encode(file_get_contents('C:\\Users\\Administrator\\Desktop\\tyg_thumb.jpg'))]]]);
 
 
-$obj = Douyin::Payment(['appid'=>'','secret'=>'','isSandBox'=>false, 'payment_salt'=>'', 'token'=>'']);
+// $obj = Douyin::Payment(['appid'=>'','secret'=>'','isSandBox'=>false, 'payment_salt'=>'', 'token'=>'']);
 // $data = $obj->payment([
 //     'out_order_no' => date('YmdHis'),
 //     'total_amount' => 1,
@@ -41,3 +41,9 @@ $obj = Douyin::Payment(['appid'=>'','secret'=>'','isSandBox'=>false, 'payment_sa
 // dump($data);
 // header("Content-type: image/jpg");
 // echo $data;
+
+$encryptedData = 'UEHa16s/9X9m61iJGU3btgnNj7EU31Vymgb6RWRsOOFuW/mLT7uAcft8M3JJbaK3Mx9xn7iIEKdZzgIuOkIKOzR+wXYv62+jhOdfF46ycQq6yB/QWm/9odEPTuMCrh4cNCGa5dVKykN+lShFTf7lZFMGkcuWbmnYGf6LD8Jr0LUyPwS/jmBWXWlqXY3f1qc3K19aAi46NvB4tjoL6mGtCnn6SUkS/PdDkkn/gPZTBumHDhzfxCV2HKbjByIiw4RBli2JFXT8l2/r1FUSnvuTDd3fgBvYuXkQsXodsERl/MEHKdWu8fcn9b6KGLDBRQCmPJlT8USM0QsOkiBT9e6U/hzc6J3ZJPM20kqdHqpjpYJLKCnK69UnX0rYdML0AQjvDK5ODJjnYwrHVpuTNMYCOJOt6fllD6rPJoYptYrHk1Jho1WAvnwTezl14GyLkBPA1a5araiEoH0jZfD/2Wqii4y8wGtxCrPv1RJSWtvxD1g=';
+$iv = 'CNl84clu4BWPelx8N6j0Wg==';
+$sessionKey = 'BnKE3GA8luaDLa7RXQEGXw==';
+$data = Tools::decryptData($encryptedData, $sessionKey, $iv);
+var_dump($data);

@@ -2,7 +2,7 @@
     "name": "deadlymous/douyin",
     "autoload": {
         "psr-4": {
-            "DeadlyMous\\Douyin\\": "src/"
+            "Douyin\\": "src/"
         }
     },
     "type":"library",
