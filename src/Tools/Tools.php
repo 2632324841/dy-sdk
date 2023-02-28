@@ -3,6 +3,33 @@ namespace Douyin\Tools;
 
 class Tools
 {
+    /**
+     * 解密敏感数据
+     *
+     * @param [type] $encryptedData
+     * @param [type] $sessionKey
+     * @param [type] $iv
+     * @return void
+     */
+    public static function decryptData($encryptedData, $sessionKey, $iv)
+    {
+        $aesIV = base64_decode($iv);
+        $aesCipher = base64_decode($encryptedData, true);
+        $result = openssl_decrypt($aesCipher, "AES-128-CBC", $sessionKey, OPENSSL_RAW_DATA, $aesIV);
+        $data = json_decode($result, true);
+        if(is_array($data)){
+            return $data;
+        }
+        return null;
+    }
+
+    /**
+     * 回调验签
+     *
+     * @param [type] $map
+     * @param string $token
+     * @return void
+     */
     public static function callbackSign($map, $token = ''){
         $rList = [];
         foreach ($map as $k => $v) {
@@ -26,6 +53,13 @@ class Tools
         return sha1(implode('', $map));
     }
 
+    /**
+     * 请求签名
+     *
+     * @param [type] $map
+     * @param string $payment_salt
+     * @return void
+     */
     public static function sign($map, $payment_salt = '')
     {
         $rList = [];
@@ -98,6 +132,16 @@ class Tools
         return false;
     }
 
+    /**
+     * 开放平台验签
+     *
+     * @param [type] $method
+     * @param [type] $url
+     * @param [type] $body
+     * @param [type] $timestamp
+     * @param [type] $nonce_str
+     * @return void
+     */
     public static function makeSign($method, $url, $body, $timestamp, $nonce_str) {
         $text = $method . "\n" . $url . "\n" . $timestamp . "\n" . $nonce_str . "\n" . $body . "\n";
         $priKey = file_get_contents("/private_key.pem");
