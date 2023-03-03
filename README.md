@@ -22,4 +22,12 @@ $obj = Douyin::Xcx(['appid'=>'','secret'=>'','isSandBox'=>false]);
 $data = $obj->login('sf72Bj0g4Xzh4dLfZ_TdtUJ_QiG7Bug3gCkkCeXWdLK-UNANLtG2OhSs5cXPxxmSfuN4dBhNLZyjnDCAh6Ri8kXupMPZ5PyBOiRjchPhniPeRHpjlSUEvmnqzAU');
 //文本检测
 $data = $obj->textCensor(['tasks'=>[['content'=>'卧槽'],['content'=>'坤坤'],['content'=>'及你太美'],['content'=>'鸡你太美']]]);
+//数据解码 一定要login后sessionKey 然后获取数据
+$encryptedData = '';
+$iv = '';
+$sessionKey = '';
+$DouyinDataCrypt = new DouyinDataCrypt('',$sessionKey);
+$signature = '';
+$data = $DouyinDataCrypt->decryptData($encryptedData, $iv, $signature);
+var_dump($data);
 ```

@@ -42,10 +42,11 @@ use Douyin\Tools\Tools;
 // header("Content-type: image/jpg");
 // echo $data;
 
-$encryptedData = 'dYOBgQ5pVvoE92EJP3g/Ywy8M+3w7GKSQ2NvSRcSAKtUUllqrpEtBowwD5hpoBfaVsWxgeSWBr9/8y3nMB593VW+zSe2LsrbwS8XeriwR7jr8M2KgSCm6/3ghz7mRCk3wt1NselB3yGsg/v90NmOuX++9aA/+MH4s0hnNXvGlG6xHnEkrlIz6jyJWjFr0WZK4tcGz2u3Ba/up3QR+ndTZkeyYlBAqVy9lCQkCUb7fV2FvoFU5HPDFn7jQrINf73WNbk0euDKd+Y89h0yvnXtD8J5oU+c80Viw4wjwlvsz09VOMNTUpvsQPYyRQeLTL5sZTlp3pPnUUGFiBHO3XEWaJ0Lly3UZkZ5Q+Hh2pLZDVM9lG6qyJJ8fAoGSl1G8uykepgA1fZ1D7G33YQc3XmKxybemGfB4p+wFIzGpjpXdlxHdRHY80Ik/ZiaPHsM24P8Ciw49YP1glEulrgd2z93vTBr72O9+tRzsjGwHgtie9E=';
-$iv = '4t0X6zwnKzGXrdxYaoU3OA==';
-$sessionKey = '34bwCZ0DSd89pQXJpCouCg==';
-$DouyinDataCrypt = new DouyinDataCrypt('tt13c1657c8ceb6589',$sessionKey);
-$signature = 'a97fc8205880e49ea99d07d33ff3f81845d22bd2';
+//数据解码 一定要login后sessionKey 然后获取数据
+$encryptedData = '';
+$iv = '';
+$sessionKey = '';
+$DouyinDataCrypt = new DouyinDataCrypt('',$sessionKey);
+$signature = '';
 $data = $DouyinDataCrypt->decryptData($encryptedData, $iv, $signature);
 var_dump($data);
