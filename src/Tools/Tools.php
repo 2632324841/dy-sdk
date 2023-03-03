@@ -1,28 +1,9 @@
 <?php
+
 namespace Douyin\Tools;
 
 class Tools
 {
-    /**
-     * 解密敏感数据
-     *
-     * @param [type] $encryptedData
-     * @param [type] $sessionKey
-     * @param [type] $iv
-     * @return void
-     */
-    public static function decryptData($encryptedData, $sessionKey, $iv)
-    {
-        $aesIV = base64_decode($iv);
-        $aesCipher = base64_decode($encryptedData, true);
-        $result = openssl_decrypt($aesCipher, "AES-128-CBC", $sessionKey, OPENSSL_RAW_DATA, $aesIV);
-        $data = json_decode($result, true);
-        if(is_array($data)){
-            return $data;
-        }
-        return null;
-    }
-
     /**
      * 回调验签
      *
@@ -30,7 +11,8 @@ class Tools
      * @param string $token
      * @return void
      */
-    public static function callbackSign($map, $token = ''){
+    public static function callbackSign($map, $token = '')
+    {
         $rList = [];
         foreach ($map as $k => $v) {
             if ($k == "msg_signature")
@@ -66,10 +48,12 @@ class Tools
         foreach ($map as $k => $v) {
             if ($k == "other_settle_params" || $k == "app_id" || $k == "sign" || $k == "thirdparty_id")
                 continue;
-            $value = trim(strval($v));
-            if (is_array($v)) {
-                $value = self::arrayToStr($v);
+            $value = $v;
+            if (is_array($value)) {
+                $value = self::arrayToStr($value);
             }
+
+            $value = trim(strval($value));
 
             $len = strlen($value);
             if ($len > 1 && substr($value, 0, 1) == "\"" && substr($value, $len, $len - 1) == "\"")
@@ -142,7 +126,8 @@ class Tools
      * @param [type] $nonce_str
      * @return void
      */
-    public static function makeSign($method, $url, $body, $timestamp, $nonce_str) {
+    public static function makeSign($method, $url, $body, $timestamp, $nonce_str)
+    {
         $text = $method . "\n" . $url . "\n" . $timestamp . "\n" . $nonce_str . "\n" . $body . "\n";
         $priKey = file_get_contents("/private_key.pem");
         $privateKey = openssl_get_privatekey($priKey, '');

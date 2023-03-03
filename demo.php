@@ -3,7 +3,7 @@ require 'vendor/autoload.php';
 use Douyin\Douyin;
 use Douyin\Factory;
 use Douyin\Model\AccessToken;
-use Douyin\Tools\Cache;
+use Douyin\Tools\DouyinDataCrypt;
 use Douyin\Tools\Tools;
 
 //PublicKey 
@@ -29,7 +29,7 @@ use Douyin\Tools\Tools;
 //     'subject' => '测试支付',
 //     'body' => '测试商品',
 //     'valid_time' => 3600,
-//     'notify_url' => 'https://bhb.gze9.cn/app/api/test'
+//     'notify_url' => 'https://www.baidu.cn'
 // ]);
 
 
@@ -42,8 +42,10 @@ use Douyin\Tools\Tools;
 // header("Content-type: image/jpg");
 // echo $data;
 
-$encryptedData = 'UEHa16s/9X9m61iJGU3btgnNj7EU31Vymgb6RWRsOOFuW/mLT7uAcft8M3JJbaK3Mx9xn7iIEKdZzgIuOkIKOzR+wXYv62+jhOdfF46ycQq6yB/QWm/9odEPTuMCrh4cNCGa5dVKykN+lShFTf7lZFMGkcuWbmnYGf6LD8Jr0LUyPwS/jmBWXWlqXY3f1qc3K19aAi46NvB4tjoL6mGtCnn6SUkS/PdDkkn/gPZTBumHDhzfxCV2HKbjByIiw4RBli2JFXT8l2/r1FUSnvuTDd3fgBvYuXkQsXodsERl/MEHKdWu8fcn9b6KGLDBRQCmPJlT8USM0QsOkiBT9e6U/hzc6J3ZJPM20kqdHqpjpYJLKCnK69UnX0rYdML0AQjvDK5ODJjnYwrHVpuTNMYCOJOt6fllD6rPJoYptYrHk1Jho1WAvnwTezl14GyLkBPA1a5araiEoH0jZfD/2Wqii4y8wGtxCrPv1RJSWtvxD1g=';
-$iv = 'CNl84clu4BWPelx8N6j0Wg==';
-$sessionKey = 'BnKE3GA8luaDLa7RXQEGXw==';
-$data = Tools::decryptData($encryptedData, $sessionKey, $iv);
+$encryptedData = 'dYOBgQ5pVvoE92EJP3g/Ywy8M+3w7GKSQ2NvSRcSAKtUUllqrpEtBowwD5hpoBfaVsWxgeSWBr9/8y3nMB593VW+zSe2LsrbwS8XeriwR7jr8M2KgSCm6/3ghz7mRCk3wt1NselB3yGsg/v90NmOuX++9aA/+MH4s0hnNXvGlG6xHnEkrlIz6jyJWjFr0WZK4tcGz2u3Ba/up3QR+ndTZkeyYlBAqVy9lCQkCUb7fV2FvoFU5HPDFn7jQrINf73WNbk0euDKd+Y89h0yvnXtD8J5oU+c80Viw4wjwlvsz09VOMNTUpvsQPYyRQeLTL5sZTlp3pPnUUGFiBHO3XEWaJ0Lly3UZkZ5Q+Hh2pLZDVM9lG6qyJJ8fAoGSl1G8uykepgA1fZ1D7G33YQc3XmKxybemGfB4p+wFIzGpjpXdlxHdRHY80Ik/ZiaPHsM24P8Ciw49YP1glEulrgd2z93vTBr72O9+tRzsjGwHgtie9E=';
+$iv = '4t0X6zwnKzGXrdxYaoU3OA==';
+$sessionKey = '34bwCZ0DSd89pQXJpCouCg==';
+$DouyinDataCrypt = new DouyinDataCrypt('tt13c1657c8ceb6589',$sessionKey);
+$signature = 'a97fc8205880e49ea99d07d33ff3f81845d22bd2';
+$data = $DouyinDataCrypt->decryptData($encryptedData, $iv, $signature);
 var_dump($data);

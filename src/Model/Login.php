@@ -35,4 +35,23 @@ class Login extends Basic
         ]);
         return $res;
     }
+
+    /**
+     * 获取登录凭证
+     *
+     * @param string $code
+     * @return void
+     */
+    public function codeSession(string $code){
+        $api = '/api/apps/jscode2session';
+        $data = [
+            'appid' => $this->config->get('appid'),
+            'secret' => $this->config->get('secret'),
+            'code' => $code
+        ];
+        $res = Request::request('GET', $this->config->get('url') . $api, [
+            'query' => $data
+        ]);
+        return $res;
+    }
 }

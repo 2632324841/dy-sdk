@@ -1,7 +1,10 @@
 <?php
 
 namespace Douyin\Contracts;
+
 use Douyin\Model\AccessToken;
+use Douyin\Tools\DouyinDataCrypt;
+
 class Basic
 {
     /**
@@ -17,8 +20,8 @@ class Basic
     protected $params;
 
     protected $headers = [
-        'User-Agent'=>'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36',
-        'Content-Type'=>'application/json:',
+        'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36',
+        'Content-Type' => 'application/json:',
     ];
 
     /**
@@ -112,15 +115,31 @@ class Basic
         if (isset(self::$cache[$key])) return self::$cache[$key];
         return self::$cache[$key] = new static($config);
     }
-    
+
     /**
      * 获取小程序凭证
      *
      * @return void
      */
-    public function getAccessToken(){
+    public function getAccessToken()
+    {
         $AccessToken = AccessToken::instance($this->config->get());
         return $AccessToken->getAccessToken();
+    }
+
+    /**
+     * 抖音敏感数据解码(一定要在tt.login后使用)
+     *
+     * @param string $sessionKey
+     * @param string $encryptedData
+     * @param string $iv
+     * @return void
+     */
+    public function decryptData(string $sessionKey, string $encryptedData, string $iv)
+    {
+        $DouyinDataCrypt = new DouyinDataCrypt($this->config->get('appid'), $sessionKey);
+        $data = $DouyinDataCrypt->decryptData($encryptedData, $iv, $data);
+        return $data;
     }
 
     /**
@@ -130,7 +149,8 @@ class Basic
      * @param [type] $val
      * @return void
      */
-    public function setConfig($key, $val){
+    public function setConfig($key, $val)
+    {
         $this->config->set($key, $val);
         return $this;
     }
@@ -141,7 +161,8 @@ class Basic
      * @param [type] $key
      * @return void
      */
-    public function getConfig($key){
+    public function getConfig($key)
+    {
         return $this->config->get($key);
     }
 }
