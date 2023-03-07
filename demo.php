@@ -8,9 +8,10 @@ use Douyin\Tools\Tools;
 
 //PublicKey 
 //appPublicKey
-// $obj = Douyin::Xcx(['appid'=>'','secret'=>'','isSandBox'=>false]);
+$obj = Douyin::Xcx(['appid'=>'asdsadas','secret'=>'safasfasfsf','isSandBox'=>false]);
+var_dump($obj);
 
-// $data = $obj->login('sf72Bj0g4Xzh4dLfZ_TdtUJ_QiG7Bug3gCkkCeXWdLK-UNANLtG2OhSs5cXPxxmSfuN4dBhNLZyjnDCAh6Ri8kXupMPZ5PyBOiRjchPhniPeRHpjlSUEvmnqzAU');
+$data = $obj->login('sf72Bj0g4Xzh4dLfZ_TdtUJ_QiG7Bug3gCkkCeXWdLK-UNANLtG2OhSs5cXPxxmSfuN4dBhNLZyjnDCAh6Ri8kXupMPZ5PyBOiRjchPhniPeRHpjlSUEvmnqzAU');
 
 // $data = $obj->generateLink('douyin',time() + 86400);
 // $data = $obj->queryLinkQuota();
@@ -43,10 +44,10 @@ use Douyin\Tools\Tools;
 // echo $data;
 
 //数据解码 一定要login后sessionKey 然后获取数据
-$encryptedData = '';
-$iv = '';
-$sessionKey = '';
-$DouyinDataCrypt = new DouyinDataCrypt('',$sessionKey);
-$signature = '';
-$data = $DouyinDataCrypt->decryptData($encryptedData, $iv, $signature);
-var_dump($data);
+// $encryptedData = '';
+// $iv = '';
+// $sessionKey = '';
+// $DouyinDataCrypt = new DouyinDataCrypt('',$sessionKey);
+// $signature = '';
+// $data = $DouyinDataCrypt->decryptData($encryptedData, $iv, $signature);
+// var_dump($data);

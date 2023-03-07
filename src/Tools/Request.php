@@ -16,6 +16,7 @@ class Request{
      */
     public static function request(string $method, $uri = '', array $options = []){
         $option['http_errors'] = false;
+        $option[''] = false;
         $Client = new Client($option);
         if(isset($options['json']) && is_array($options['json'])){
             $options = self::handleJson($options);

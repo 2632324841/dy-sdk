@@ -2,6 +2,9 @@
 
 namespace Douyin\Contracts;
 
+use ReflectionClass;
+use ReflectionMethod;
+use ReflectionException;
 use Douyin\Model\AccessToken;
 use Douyin\Tools\DouyinDataCrypt;
 
@@ -25,10 +28,31 @@ class Basic
     ];
 
     /**
-     * 静态缓存
-     * @var static
+     * 始终创建新的对象实例
+     * @var bool
      */
-    protected static $cache;
+    protected static $alwaysNewInstance;
+
+    /**
+     * 容器对象实例
+     */
+    protected static $instance;
+
+    /**
+     * 容器中的对象实例
+     * @var array
+     */
+    protected static $instances = [];
+
+    /**
+     * 容器绑定标识
+     * @var array
+     */
+    protected static $bind = [
+        'Xcx' => Xcx::class,
+        'Payment' => Payment::class,
+        'Subscribe' => Subscribe::class,
+    ];
 
     /**
      * 交易系统URL
@@ -105,6 +129,82 @@ class Basic
     }
 
     /**
+     * 获取当前容器的实例（单例）
+     * @access public
+     * @return static
+     */
+    public static function getInstance(array $option)
+    {
+        if (is_null(static::$instance)) {
+            static::$instance = new static($option);
+        }
+
+        return static::$instance;
+    }
+
+    /**
+     * 设置当前容器的实例
+     * @access public
+     * @param  object        $instance
+     * @return void
+     */
+    public static function setInstance($instance)
+    {
+        static::$instance = $instance;
+    }
+
+    /**
+     * 获取当前Facade对应类名（或者已经绑定的容器对象标识）
+     * @access protected
+     * @return string
+     */
+    protected static function getFacadeClass()
+    {
+    }
+
+
+    public static function createFacade($class = '', $args = [], $newInstance = false)
+    {
+        $class = $class ?: static::class;
+
+        $facadeClass = static::getFacadeClass();
+
+        if ($facadeClass) {
+            $class = $facadeClass;
+        } else if (isset(self::$bind[$class])) {
+            $class = self::$bind[$class];
+        }
+
+        if (static::$alwaysNewInstance) {
+            $newInstance = true;
+        }
+
+        return self::make($class, $args, $newInstance);
+    }
+
+    public static function make($class, $argv, $newInstance)
+    {
+        try {
+            if ($newInstance) {
+                if (isset(self::$instances[$class])) {
+                    return self::$instances[$class];
+                }
+            }
+            $ref = new \ReflectionClass($class);
+            if (!$ref->inNamespace()) {
+                return null;
+            }
+            // $constructor = $ref->getConstructor();
+            $instance = $ref->newInstanceArgs($argv);
+            self::$instances[$class] = $instance;
+            self::setInstance($instance);
+            return $instance;
+        } catch (ReflectionException $e) {
+            throw new ReflectionException('class not exists: ' . $class);
+        }
+    }
+
+    /**
      * 静态创建对象
      * @param array $config
      * @return static
@@ -112,8 +212,8 @@ class Basic
     public static function instance(array $config)
     {
         $key = md5(get_called_class() . serialize($config));
-        if (isset(self::$cache[$key])) return self::$cache[$key];
-        return self::$cache[$key] = new static($config);
+        if (isset(self::$instances[$key])) return self::$instances[$key];
+        return self::$instances[$key] = new static($config);
     }
 
     /**
