@@ -135,10 +135,10 @@ class Basic
      * @param string $iv
      * @return void
      */
-    public function decryptData(string $sessionKey, string $encryptedData, string $iv)
+    public function decryptData(string $sessionKey, string $encryptedData, string $iv, string $signature = null)
     {
         $DouyinDataCrypt = new DouyinDataCrypt($this->config->get('appid'), $sessionKey);
-        $data = $DouyinDataCrypt->decryptData($encryptedData, $iv, $data);
+        $data = $DouyinDataCrypt->decryptData($encryptedData, $iv, $signature);
         return $data;
     }
 
