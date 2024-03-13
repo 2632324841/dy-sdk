@@ -259,10 +259,58 @@ class Basic
      * 获取配置数据
      *
      * @param [type] $key
-     * @return void
+     * @return 
      */
     public function getConfig($key)
     {
         return $this->config->get($key);
     }
+
+    /**
+     * 验签
+     *
+     * @param [type] $http_body
+     * @param [type] $timestamp
+     * @param [type] $nonce_str
+     * @param [type] $sign
+     * @return void
+     */
+    public function verify($http_body, $timestamp, $nonce_str, $sign)
+    {
+        $data = $timestamp . "\n" . $nonce_str . "\n" . $http_body . "\n";
+        $res = openssl_get_publickey($this->getConfig('PublicKey')); // 注意验签时publicKey使用平台公钥而非应用公钥
+        $result = (bool)openssl_verify($data, base64_decode($sign), $res, OPENSSL_ALGO_SHA256);
+        $php_version = floatval(phpversion());
+        if ($php_version < 8.0) {
+            openssl_free_key($res);
+        }
+
+        return $result;  //bool
+    }
+
+    /**
+     * 创建签名
+     *
+     * @param [type] $method
+     * @param [type] $url
+     * @param [type] $body
+     * @param [type] $timestamp
+     * @param [type] $nonce_str
+     * @return void
+     */
+    public function makeSign($method, $url, $body, $timestamp, $nonce_str)
+    {
+        //method内容必须大写，如GET、POST，uri不包含域名，必须以'/'开头
+        $text = $method . "\n" . $url . "\n" . $timestamp . "\n" . $nonce_str . "\n" . $body . "\n";
+        $priKey = file_get_contents("/private_key.pem");
+        $privateKey = openssl_get_privatekey($priKey, '');
+        openssl_sign($text, $sign, $privateKey, OPENSSL_ALGO_SHA256);
+        $sign = base64_encode($sign);
+        $php_version = floatval(phpversion());
+        if ($php_version < 8.0) {
+            openssl_free_key($privateKey);
+        }
+        return $sign;
+    }
+    
 }
