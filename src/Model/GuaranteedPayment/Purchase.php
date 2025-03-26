@@ -17,7 +17,7 @@ class Purchase extends Basic
      */
     public function createMerchant(array $option = [])
     {
-        $api = '/api/apps/ecpay/v1/create_order';
+        $api = '/api/apps/ecpay/saas/create_merchant';
         $option['access_token'] = $this->getAccessToken();
         $option['appid'] = $this->config->get('appid');
         $sign = Tools::sign($option);

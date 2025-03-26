@@ -111,7 +111,12 @@ class Basic
         if ($this->config->get('sub_mch_id')) {
             $this->params->set('sub_mch_id', $this->config->get('sub_mch_id'));
         }
-
+        //配置缓存
+        $this->config->set('cache_type', 'file');
+        $this->config->set('cache_path', './douyin');
+        if (isset($options['cache_path']) && !empty($options['cache_path'])) {
+            $this->config->set('cache_path', $options['cache_path']);
+        }
         //设置api
         if ($this->config->get('isSandBox')) {
             $this->config->set('curriculum_url', $this->curriculum_sandbox);

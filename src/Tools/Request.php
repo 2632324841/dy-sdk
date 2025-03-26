@@ -16,11 +16,11 @@ class Request{
      */
     public static function request(string $method, $uri = '', array $options = []){
         $option['http_errors'] = false;
-        $option[''] = false;
         $Client = new Client($option);
         if(isset($options['json']) && is_array($options['json'])){
             $options = self::handleJson($options);
-        }else if(isset($options['multipart']) && is_array($options['multipart'])){
+        }else 
+        if(isset($options['multipart']) && is_array($options['multipart'])){
             $options = self::handleMultipart($options);
         }
         $res = $Client->request(strtoupper($method), $uri, $options);

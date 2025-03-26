@@ -18,9 +18,9 @@ class AccessToken extends Basic
     public function getAccessToken()
     {
         $api = '/api/apps/v2/token';
-        $Cache = new Cache();
+        $Cache = new Cache($this->config->get('cache_type'), $this->config->get('cache_path'));
         $access_token = $Cache->get('access_token');
-        if(!empty($access_token) || $access_token !== false){
+        if (!empty($access_token) || $access_token !== false) {
             return $access_token;
         }
         $data = [
@@ -31,7 +31,7 @@ class AccessToken extends Basic
         $res = Request::request('POST', $this->config->get('url') . $api, [
             'json' => $data,
         ]);
-        if(isset($res['data']['access_token']) && !empty($res['data']['access_token'])){
+        if (isset($res['data']['access_token']) && !empty($res['data']['access_token'])) {
             $Cache->set('access_token', $res['data']['access_token'], 7000);
         }
         return $res['data']['access_token'];
